@@ -1,4 +1,6 @@
+import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
     const [data, setData] = useState({
@@ -18,13 +20,25 @@ const Signup = () => {
         })
     };
 
-    const handleRegister = () => {
-        console.log(data)
+    const [error, setError] = useState("");
+    const navigate = useNavigate()
+
+    const handleRegister = async () => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/register`, data);
+            if (response.status === 201) {
+                alert("You are successfully registered. Please login!")
+                navigate("/login")
+            }
+        } catch (err) {
+            setError("Registration failed. Please try again.");
+        }
     }
 
     return (
         <div className="flex flex-col gap-2 max-w-[500px] m-auto mt-[100px]">
             <h3 className="text-lg font-bold">Please Register</h3>
+            {error && <p className="text-red-500">{error}</p>}
             <input
                 name="username"
                 onChange={(e) => handleSignup(e)}
@@ -39,7 +53,7 @@ const Signup = () => {
                 onChange={(e) => handleSignup(e)}
                 value={data.password}
                 className="border-black border rounded-sm"
-                type="text"
+                type="password"
                 id="password"
                 placeholder="ENTER PASSWORD"
             />

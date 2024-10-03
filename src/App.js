@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Blogs from './components/Blogs';
 import CreateBlogFrom from './components/CreateBlogFrom';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -17,7 +18,14 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/blogs' element={<Blogs />} />
-        <Route path='/create-blog' element={<CreateBlogFrom />} />
+        <Route
+          path='/create-blog'
+          element={
+            <PrivateRoute>
+              <CreateBlogFrom />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </div>
   );
